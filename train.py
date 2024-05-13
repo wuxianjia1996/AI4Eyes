@@ -12,6 +12,9 @@ import argparse
 import utils
 import dataloader
 
+
+
+
 # Warm up: lr from 1e-8 to max-lr
 def warmup(trainloader, net, criterion, optimizer, logger, args): 
     
@@ -20,9 +23,9 @@ def warmup(trainloader, net, criterion, optimizer, logger, args):
     losses = utils.AverageMeter()
     top1 = utils.AverageMeter()
     
-    while nb_iter < args.warmup_iter : 
-      
-        for (inputs, targets) in trainloader:
+    while nb_iter < args.warmup_iter:
+
+       for (inputs, targets) in trainloader:
         
             inputs = inputs.cuda() if args.cuda else inputs
             targets = targets.cuda() if args.cuda else targets
@@ -37,12 +40,12 @@ def warmup(trainloader, net, criterion, optimizer, logger, args):
             acc1 = utils.accuracy(outputs, targets, topk=(1, ))
             losses.update(loss.item(), inputs.size()[0])
             top1.update(acc1[0].item(), inputs.size()[0])
-            if nb_iter % 100 == 0 : 
+            if nb_iter % 100 == 0:
                 msg = 'Warmup iter: {:d} | Lr {:.7f} | Loss: {:.3f} | Top1: {:.3f}% '.format(nb_iter, lr, losses.avg, top1.avg)
                 logger.info(msg)
                 losses = utils.AverageMeter()
                 top1 = utils.AverageMeter()
-            if nb_iter == args.warmup_iter : 
+            if nb_iter == args.warmup_iter:
                 break
             
 
@@ -88,27 +91,24 @@ parser.add_argument('--max-lr', default=1e-5, type=float, help='learning rate')
 parser.add_argument('--weight-decay', default=5e-4, type=float, help='weight decay')
 parser.add_argument('--out-dir', type=str, help='output directory')
 
-parser.add_argument('--train-dir', type = str, default = '/apdcephfs/share_1290939/tisonshen/cataract_img/train', help='train image directory')
-parser.add_argument('--val-dir', type = str, default = '/apdcephfs/share_1290939/tisonshen/cataract_img/val', help='val image directory')
+parser.add_argument('--train-dir', type = str, default = 'train_dataset path', help='train image directory')
+parser.add_argument('--val-dir', type = str, default = 'val_dataset path', help='val image directory')
 parser.add_argument('--batch-size', type = int, default = 64, help='batch size')
-parser.add_argument('--total-iter', type = int, default = 1000, help='nb of iterations')
+parser.add_argument('--total-iter', type = int, default = 500, help='nb of iterations')
 parser.add_argument('--nb-cls', type = int, default=2, help='nb of output classes')
-parser.add_argument('--warmup-iter', type = int, default=500, help='warm up iteration')
-
-
+parser.add_argument('--warmup-iter', type = int, default=100, help='warm up iteration')
 parser.add_argument('--cuda', action='store_true', help='whether to use gpu')
 parser.add_argument('--resume-pth', type = str, help='resume_pth')
 parser.add_argument('--inet-pretrain', action='store_true', help='imageNet pretrained')
 
 
-
-
-
-
 args = parser.parse_args()
+args.out_dir = 'out_dir path'
+
+args.cuda = torch.cuda.is_available()
 
 if not os.path.isdir(args.out_dir):
-    os.mkdir(args.out_dir)
+   os.mkdir(args.out_dir)
     
 logger = utils.get_logger(args.out_dir)
 logger.info(json.dumps(vars(args), indent=4, sort_keys=True))
@@ -117,21 +117,17 @@ best_acc = 0  # best test accuracy
 
 normalize = transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
 
-
 train_transform = transforms.Compose([transforms.RandomResizedCrop(224),
                     transforms.RandomHorizontalFlip(),
                     transforms.ToTensor(),
                     normalize,])
-                                
-        
 val_transform = transforms.Compose([transforms.Resize(256),
                 transforms.CenterCrop(224),
                 transforms.ToTensor(),
                 normalize,])
-        
+
 trainloader = dataloader.TrainLoader(args.batch_size, args.train_dir, train_transform)
 valloader = dataloader.ValLoader(args.batch_size, args.val_dir, val_transform)
-
 
 randomSeed = 123
 torch.backends.cudnn.deterministic = True
@@ -140,15 +136,14 @@ torch.manual_seed(randomSeed)
 net = models.resnet18(pretrained= args.inet_pretrain)
 net.fc = nn.Linear(512, args.nb_cls)
 
-if args.resume_pth : 
+if args.resume_pth:
     net.load_state_dict(torch.load(args.resume_pth))
     msg = 'Loading weight from {}'.format(args.resume_pth)
     logger.info (msg)
-    
-    
-if args.cuda : 
-    net.cuda()
 
+
+if args.cuda:
+    net.cuda()
 
 
 criterion = nn.CrossEntropyLoss()
@@ -159,7 +154,6 @@ with torch.no_grad() :
     best_acc = evaluate(valloader, net, logger, best_acc, args)
 
 
-    
 warmup(trainloader, net, criterion, optimizer, logger, args)
 
 ## remove grad for evaluation 
@@ -189,18 +183,22 @@ while nb_iter < args.total_iter :
         acc1 = utils.accuracy(outputs, targets, topk=(1, ))
         losses.update(loss.item(), inputs.size()[0])
         top1.update(acc1[0].item(), inputs.size()[0])
-        if nb_iter % 100 == 0 : 
+        if nb_iter % 100 == 0:
             msg = 'training iter: {:d} | Lr {:.7f} | Loss: {:.3f} | Top1: {:.3f}%'.format(nb_iter, lr, losses.avg, top1.avg)
             logger.info(msg)
             losses = utils.AverageMeter()
             top1 = utils.AverageMeter()
-            with torch.no_grad() : 
+            with torch.no_grad() :
                 best_acc = evaluate(valloader, net, logger, best_acc, args)
             net.train()
             
         if nb_iter == args.total_iter : 
             break
 
-msg = 'mv {} {}'.format(os.path.join(args.out_dir, 'netBest.pth'), os.path.join(args.out_dir, 'netBest{:.3f}.pth'.format(best_acc)))
-logger.info (msg)
-os.system(msg)
+
+torch.save(net.state_dict(), 'net_cataract.pt')
+
+
+msg = 'mv {0} {1}'.format(os.path.join(args.out_dir, 'netBest.pth'), os.path.join(args.out_dir, 'netBest{:.3f}.pth'.format(best_acc)))
+logger.info(msg)
+# os.system(msg)

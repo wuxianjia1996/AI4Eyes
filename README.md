@@ -1,83 +1,59 @@
 # eye_images
-deep learning for eye images analysis
+This repository contains the official implementation for "Multi-level diagnosis of cataract from anterior images via deep learning".
+![Schematic](./images/schematic-01.jpg)
+
+## Deployment Demo
+You can access the AI-guided diagnosis models when uploading an anterior image through edge devices (i.e. smartphone, tablet and laptop).
+Here is the demo link: http://eye.masaikk.icu
+
+
+<div style="display:flex;">
+    <img src="./images/2.gif" alt="Image 1" style="width:33%;">
+    <img src="./images/3.gif" alt="Image 2" style="width:33%;">
+    <img src="./images/4.gif" alt="Image 3" style="width:33%;">
+</div>
+
 
 ## Installation 
-
-Pytorch 1.10 + CUDA10.2 
-
+Tested on:
+Ubuntu 20 with torch 2.0 & CUDA 11.8 on an A100.\
+Windows 10 with torch 1.10 & CUDA 10.2 on a GTX1650.
 ```python
+conda create -n ai4eyes python==3.8
 pip install torch==1.10.0+cu102 torchvision==0.11.0+cu102 torchaudio==0.10.0 -f https://download.pytorch.org/whl/torch_stable.html
 ```
 
-## Cataract and Detach_retinal
-
-### Data pre-processing
-
+## Data pre-processing
 Split into train / val / test
-
 ```python
 cd misc
-python pre_proces.py --help
-```
-
-For cataract and detach_retinal, by running : 
-```python
-python pre_process.py --img-dir cataract_org --out-dir cataract_img
-python pre_process.py --img-dir detach_retinal_org --out-dir detach_retinal_img
-```
-
-We should obtain : 
-
-```python
-['cataract', 'normal']
-cls name cataract : 
-    train images --> 1196; 
-    val images --> 170;
-    test images --> 343
-cls name normal : 
-    train images --> 140; 
-    val images --> 20; 
-    test images --> 41
-    
-['detach_retinal', 'normal']
-cls name detach_retinal : 
-    train images --> 244; 
-    val images --> 35;
-    test images --> 71
-cls name normal : 
-    train images --> 280; 
-    val images --> 40; 
-    test images --> 80
+python pre_proces.py --img-dir cataract_org --out-dir cataract_img
 ```
 
 
 ## Training
-
-To see the command: 
+To facilitate AI-guided multilevel diagnosis, three deep learning models (i.e. binary, three-level classification and four-level classification model) have been trained.
 ```python
-python train.py --help
+python train.py --out-dir output_path --batch-size 64 --inet-pretrain
 ```
-
-Example of training command (training with imagenet pretrained weight and batch size 64): 
-```python
-python train.py --out-dir resnet18_inetpre_iter1k --cuda --batch-size 64 --inet-pretrain
-```
-
-After the training, to save the parameters of trained model:
-```python
-torch.save(net.state_dict(), 'net_cataract.pt')
-torch.save(net.state_dict(), 'net_retinal.pt')
-```
-
 
 ## Test
-
-To test the trained model, load saved parameters:
+To test the performance of trained model, load the saved checkpoints which we have provided in the checkpoints folds.
 ```python
-new_net = models.resnet18(pretrained= args.inet_pretrain)
+new_net = models.resnet18(pretrained=args.inet_pretrain)
 new_net.fc = nn.Linear(512, args.nb_cls)
 new_net.load_state_dict(torch.load('net_cataract.pt'))
 ```
 
+## t-Distributed Stochastic Neighbor Embedding (t-SNE)
+t-SNE is used for visualization and exploratory data analysis of deep learning models.
+```python
+python t-SNE.py
+```
+
 ## Class Activation Mapping (CAM)
-Loading the trained model to visualize the discriminative image regions used by the CNN to identify image category.
+CAM is a technique used in computer vision to visualize and understand the 
+important regions of an image that contribute to the classification decision made by a deep learning model.
+```python
+python CAM.py
+```

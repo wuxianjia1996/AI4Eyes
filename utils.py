@@ -83,6 +83,42 @@ def accuracy(output, target, topk=(1,)):
         return res
 
 
+def f1_score(output, target, topk=(1,)):
+    TP, TN, FN, FP = 0, 0, 0, 0
+
+    with torch.no_grad():
+        maxk = max(topk)
+        _, pred = output.topk(maxk, 1, True, True)
+        pred = pred.t()
+        target = target.view(1, -1).expand_as(pred)
+
+        TP += float(((pred.data == 1) & (target.data == 1)).sum())
+        TN += float(((pred.data == 0) & (target.data == 0)).sum())
+        FN += float(((pred.data == 0) & (target.data == 1)).sum())
+        FP += float(((pred.data == 1) & (target.data == 0)).sum())
+
+        acc = (TP + TN) / (TP + TN + FN + FP)
+        precision = TP / (TP + FP)
+        recall = TP / (TP + FN)
+        F1 = 2 * precision * recall / (precision + recall)
+
+        return acc, precision, recall, F1
+
+
+def get_back_errors(output, target, topk=(1,)):
+    with torch.no_grad():
+        maxk = max(topk)
+        _, pred = output.topk(maxk, 1, True, True)
+        pred = pred.t()
+        target = target.view(1, -1).expand_as(pred)
+
+        res = []
+        for i in range(len(target[0])):
+            if int(pred[0][i]) == int((not target[0][i])):
+                res.append(i)
+
+        return res
+
 
 def get_mean_and_std(dataset):
     '''Compute the mean and std value of dataset.'''

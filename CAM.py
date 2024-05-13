@@ -28,12 +28,14 @@ args = parser.parse_args()
 new_net = models.resnet18(pretrained= args.inet_pretrain)
 new_net.fc = nn.Linear(512, args.nb_cls)
 # checkpoint = torch.load('net_retinal.pt', map_location=lambda storage, loc: storage.cuda(0))
-new_net.load_state_dict(torch.load('net_cataract.pt'))
+new_net.load_state_dict(torch.load('checkpoint_path'))
 final_conv = 'layer4'
 new_net.eval()
 new_net.cuda()
 
 classes = {0: 'normal', 1: 'cataract'}
+# classes = {0: 'normal', 1: 'obvious', 2: 'severe'}
+# classes = {0: 'normal', 1: 'mild', 2: 'moderate', 3: 'severe'}
 
 features_blobs = []
 
