@@ -48,6 +48,7 @@ t-SNE is used for visualization and exploratory data analysis of deep learning m
 ```python
 python t-SNE.py
 ```
+![-SNE](./images/t-SNE-01.jpg)
 
 ## Class Activation Mapping (CAM)
 CAM is a technique used in computer vision to visualize and understand the 
@@ -55,3 +56,4 @@ important regions of an image that contribute to the classification decision mad
 ```python
 python CAM.py
 ```
+![-SNE](./images/CAM-01.jpg)
