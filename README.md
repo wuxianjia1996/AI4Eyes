@@ -7,11 +7,9 @@ You can access the AI-guided diagnosis models when uploading an anterior image t
 Here is the demo link: http://eye.masaikk.icu
 
 
-<div style="display:flex;">
-    <img src="./images/2.gif" alt="Image 1" style="width:33%;">
-    <img src="./images/3.gif" alt="Image 2" style="width:33%;">
-    <img src="./images/4.gif" alt="Image 3" style="width:33%;">
-</div>
+| binary diagnosis| three-level diagnosis | four-level diagnosis |
+| --- | --- | --- |
+| ![](./images/2.gif) | ![](./images/3.gif) | ![图片3](./images/4.gif) |
 
 
 ## Installation 
