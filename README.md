@@ -1,4 +1,4 @@
-# eye_images
+# AI4Eyes
 This repository contains the official implementation for "Multi-level diagnosis of cataract from anterior images via deep learning".
 ![Schematic](./images/schematic-01.jpg)
 
