@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d9e723c0-892d-4d2a-a058-07026eb02cbf" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -16,8 +17,8 @@
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="600">
-                <caret line="44" lean-forward="true" selection-start-line="44" selection-end-line="44" />
+              <first_editor relative-caret-position="420">
+                <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
               </first_editor>
               <second_editor />
             </state>
@@ -27,7 +28,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/CAM.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
+            <state relative-caret-position="270">
+              <caret line="15" selection-start-line="15" selection-end-line="15" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -110,7 +112,7 @@
     <frame x="-7" y="-7" width="1721" height="1041" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25270757" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16726835" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -133,7 +135,8 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/CAM.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
+        <state relative-caret-position="270">
+          <caret line="15" selection-start-line="15" selection-end-line="15" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
@@ -143,8 +146,8 @@
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="600">
-            <caret line="44" lean-forward="true" selection-start-line="44" selection-end-line="44" />
+          <first_editor relative-caret-position="420">
+            <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
           </first_editor>
           <second_editor />
         </state>

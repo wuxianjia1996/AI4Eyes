@@ -15,10 +15,13 @@ Here is the demo link: http://eye.masaikk.icu
 ## Installation 
 Tested on:
 Ubuntu 20 with torch 2.0 & CUDA 11.8 on an A100.\
-Windows 10 with torch 1.10 & CUDA 10.2 on a GTX1650.
+Windows 10 with torch 1.10 & CUDA 10.2 on a GTX-1650.
 ```python
 conda create -n ai4eyes python==3.8
-pip install torch==1.10.0+cu102 torchvision==0.11.0+cu102 torchaudio==0.10.0 -f https://download.pytorch.org/whl/torch_stable.html
+# Ubuntu 20 with an A100
+pip install torch==1.10.0+cu102 torchvision==0.11.0+cu102
+# Windows 10 on a GTX-1650
+pip install torch==1.10.0+cu102 torchvision==0.11.0+cu102
 ```
 
 ## Data pre-processing
