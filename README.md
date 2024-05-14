@@ -19,7 +19,7 @@ Windows 10 with torch 1.10 & CUDA 10.2 on a GTX-1650.
 ```python
 conda create -n ai4eyes python==3.8
 # Ubuntu 20 with an A100
-pip install torch==1.10.0+cu102 torchvision==0.11.0+cu102
+pip install torch==2.0.0+cu118 torchvision==1.15.0+cu118
 # Windows 10 on a GTX-1650
 pip install torch==1.10.0+cu102 torchvision==0.11.0+cu102
 ```
